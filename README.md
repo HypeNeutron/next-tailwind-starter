@@ -5,9 +5,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 Run the following command to create a new project with this Starter:
 
 ```
-pnpm create next-app test-app -e https://github.com/HypeNeutron/next-typescript-starter
+pnpm create next-app test-app -e https://github.com/HypeNeutron/next-tailwind-starter
 # or
-npx create-next-app my-app -e https://github.com/HypeNeutron/next-typescript-starter
+npx create-next-app my-app -e https://github.com/HypeNeutron/next-tailwind-starter
 ```
 
 Once the project and dependencies are finished installing, you can navigate to that directory and start up the development server with:
