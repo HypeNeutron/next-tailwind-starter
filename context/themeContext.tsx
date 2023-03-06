@@ -6,18 +6,20 @@ import React, {
   useState,
 } from "react";
 
-const getInitialTheme = () => {
-  if (typeof window !== "undefined" && window.localStorage) {
-    const getStorage = window.localStorage.getItem("color-theme");
-    if (typeof getStorage === "string") return getStorage;
-    if (window.matchMedia("(prefers-color-scheme:dark").matches) return "dark";
-  }
-  return "light";
+type TTheme = "dark" | "light";
+type TThemeContext = {
+  theme: TTheme;
+  setTheme: React.Dispatch<React.SetStateAction<TTheme>>;
 };
 
-type TThemeContext = {
-  theme: string;
-  setTheme: React.Dispatch<React.SetStateAction<string>>;
+const getInitialTheme = (): TTheme => {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const getStorage = window.localStorage.getItem("color-theme");
+    if (getStorage === "light" || getStorage === "dark") return getStorage;
+    if (window.matchMedia("(prefers-color-scheme:dark").matches) return "dark";
+    return "light";
+  }
+  return "light";
 };
 
 const ThemeContext = React.createContext<TThemeContext | "">("");
@@ -26,11 +28,11 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState(getInitialTheme);
   const [hasMounted, setHasMounted] = useState(false);
 
-  const checkTheme = useCallback((existing: string) => {
+  const checkTheme = useCallback((currentTheme: TTheme) => {
     const root = window.document.documentElement;
-    root.classList.remove(existing === "dark" ? "light" : "dark");
-    root.classList.add(existing);
-    localStorage.setItem("color-theme", existing);
+    root.classList.toggle("dark", currentTheme === "dark");
+    root.classList.toggle("light", currentTheme === "light");
+    localStorage.setItem("color-theme", currentTheme);
   }, []);
 
   useEffect(() => {
